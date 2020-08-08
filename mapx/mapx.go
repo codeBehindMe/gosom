@@ -27,7 +27,7 @@ package mapx
 type Mapx struct {
 	data         []NeuronDouble
 	NRows, NCols int
-	NWeights int
+	NWeights     int
 }
 
 type NeuronDouble []float64
@@ -36,15 +36,13 @@ func (p *Mapx) GetNode(row int, col int) NeuronDouble {
 	return p.data[p.NCols*row+col]
 }
 
-func New(nrows, ncols , nweights int) *Mapx {
-	nDouble := NeuronDouble{1,2,3,4}
-	mpx:=  &Mapx{
-		data:  make([]NeuronDouble, nrows*ncols),
-		NRows: nrows,
-		NCols: ncols,
+func New(nrows, ncols, nweights int) *Mapx {
+	mpx := &Mapx{
+		data:     make([]NeuronDouble, nrows*ncols),
+		NRows:    nrows,
+		NCols:    ncols,
 		NWeights: nweights,
 	}
 
-	mpx.data[0] = nDouble
 	return mpx
 }
