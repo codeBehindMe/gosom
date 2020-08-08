@@ -23,8 +23,17 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/codeBehindMe/gosom/mapx"
+)
 
-func main(){
+func main() {
 	fmt.Println("Hello from gosom")
+	som := mapx.New(100, 100, 3)
+	_ = som.Initialise(mapx.RandomNormalInitialiser)
+	weights := som.GetNode(0, 0)
+	for _, v := range weights {
+		fmt.Printf("%v", v)
+	}
 }
