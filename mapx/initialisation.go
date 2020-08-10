@@ -45,13 +45,13 @@ func (p *Mapx) Initialise(s Scheme) error {
 	case ZeroesInitialiser:
 		return fmt.Errorf("unsupported initalisation")
 	case OnesInitialiser:
-		initialiseOnes(&p.data, p.NWeights)
+		initialiseOnes(&p.Data, p.NWeights)
 		return nil
 	case RandomNormalInitialiser:
-		initialiseRandomNormal(&p.data, p.NWeights)
+		initialiseRandomNormal(&p.Data, p.NWeights)
 		return fmt.Errorf("unsupported initialisation")
 	case PseudoZerosOnesInitialiser:
-		initialisePseudoZeroOnes(&p.data, p.NWeights)
+		initialisePseudoZeroOnes(&p.Data, p.NWeights)
 	}
 	return fmt.Errorf("undefined initialisation scheme: %v", s)
 }
