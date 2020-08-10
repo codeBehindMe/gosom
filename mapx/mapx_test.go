@@ -36,8 +36,8 @@ func TestNew(t *testing.T) {
 		t.Errorf("Col count mismatc - got: %v, want %v", mpx.NCols, 10)
 	}
 
-	if len(mpx.data) != 10*10 {
-		t.Errorf("Data container size mismatch - got: %v , want %v", len(mpx.data), 10*10)
+	if len(mpx.Data) != 10*10 {
+		t.Errorf("Data container size mismatch - got: %v , want %v", len(mpx.Data), 10*10)
 	}
 }
 
@@ -49,12 +49,23 @@ func TestMapx_Initialise(t *testing.T) {
 	if err != nil {
 		t.Errorf("initialisation failed with error: %v", err)
 	}
-	for i := range mpx.data {
-		neuron := mpx.data[i]
+	for i := range mpx.Data {
+		neuron := mpx.Data[i]
 		for _, weight := range neuron {
 			if weight != 1 {
 				t.Errorf("incorrect initialisation- got %v, want %v", weight, 1)
 			}
 		}
+	}
+}
+
+func TestMapx_IndexToNode(t *testing.T) {
+	mpx := New(10, 10, 3)
+	row, col := mpx.IndexToRowCol(99)
+	if row != 9 {
+		t.Errorf("incorrect row - got %v, want %v", row, 9)
+	}
+	if col != 9 {
+		t.Errorf("incorrect col - got %v, want %v", col, 9)
 	}
 }

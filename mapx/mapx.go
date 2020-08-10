@@ -25,20 +25,35 @@ package mapx
 
 // Mapx will contain the actual SOM Map itself.
 type Mapx struct {
-	data         []NeuronDouble
+	Data         []NeuronDouble
 	NRows, NCols int
 	NWeights     int
 }
 
 type NeuronDouble []float64
 
+func (n *NeuronDouble) ToSliceOfFloat64() []float64 {
+	sliceF64 := make([]float64, len(*n))
+	for i, v := range *n {
+		sliceF64[i] = v
+	}
+	return sliceF64
+}
+
 func (p *Mapx) GetNode(row int, col int) NeuronDouble {
-	return p.data[p.NCols*row+col]
+	return p.Data[p.NCols*row+col]
+}
+
+// FIXME: Is this the best position for this?
+func (p *Mapx) IndexToRowCol(index int) (row, col int) {
+	col = index % p.NCols
+	row = index / p.NCols
+	return row, col
 }
 
 func New(nrows, ncols, nweights int) *Mapx {
 	mpx := &Mapx{
-		data:     make([]NeuronDouble, nrows*ncols),
+		Data:     make([]NeuronDouble, nrows*ncols),
 		NRows:    nrows,
 		NCols:    ncols,
 		NWeights: nweights,
