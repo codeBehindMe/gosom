@@ -37,3 +37,10 @@ func TestGetMinInFloat64Slice(t *testing.T) {
 		}
 	}
 }
+
+func TestEuclidianDistance2D(t *testing.T) {
+	dist := EuclidianDistance2D(0, 0, 3, 4)
+	if dist != 5 {
+		t.Errorf("Incorrect distance - got %v want %v", dist, 5)
+	}
+}
