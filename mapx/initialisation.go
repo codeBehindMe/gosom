@@ -52,6 +52,7 @@ func (p *Mapx) Initialise(s Scheme) error {
 		return fmt.Errorf("unsupported initialisation")
 	case PseudoZerosOnesInitialiser:
 		initialisePseudoZeroOnes(&p.Data, p.NWeights)
+		return nil
 	}
 	return fmt.Errorf("undefined initialisation scheme: %v", s)
 }
