@@ -25,7 +25,6 @@ package feed
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -48,21 +47,6 @@ func (c *CSVFileFeeder) MakeFeaturePipe() FeaturePipe {
 	return make(FeaturePipe)
 }
 
-// FIXME: Remove
-func (c *CSVFileFeeder) GetFeed() (chan []float64, error) {
-	file, err := os.Open(c.Filename)
-	if err != nil {
-		return nil, fmt.Errorf("Could not open file: %v", err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		fmt.Println(scanner.Text())
-	}
-	return make(chan []float64), nil
-}
-
 func splitCSVToFloat64Slice(s string) ([]float64, error) {
 	strSlice := strings.Split(s, ",")
 	floatSlice := make([]float64, len(strSlice))
@@ -77,7 +61,7 @@ func splitCSVToFloat64Slice(s string) ([]float64, error) {
 	return floatSlice, nil
 }
 
-func (c *CSVFileFeeder) Start(sc FeaturePipe ) {
+func (c *CSVFileFeeder) Start(sc FeaturePipe) {
 	file, _ := os.Open(c.Filename)
 	defer file.Close()
 

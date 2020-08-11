@@ -28,20 +28,6 @@ import (
 	"testing"
 )
 
-// FIXME: This needs to be converted to a test.
-func TestCSVFileFeeder_GetFeed(t *testing.T) {
-	filePath := "test.csv"
-	feeder := CSVFileFeeder{
-		Filename:    filePath,
-		FeatureSize: 0,
-	}
-	feed, err := feeder.GetFeed()
-	if err != nil {
-		t.Errorf("Failed to execute test: %v", err)
-	}
-	_ = feed
-}
-
 // FIXME: This needs to be converted to test
 func TestCSVFileFeeder_Start(t *testing.T) {
 
@@ -54,7 +40,7 @@ func TestCSVFileFeeder_Start(t *testing.T) {
 
 	go feeder.Start(sc)
 
-	for i := range sc{
+	for i := range sc {
 		fmt.Println(i)
 	}
 }
