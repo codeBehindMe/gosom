@@ -33,7 +33,8 @@ import (
 // Implements feeding to the algorithm.
 
 type Feeder interface {
-	GetFeed() chan []float64
+	MakeFeaturePipe() FeaturePipe
+	Start(sc FeaturePipe)
 }
 
 type FeaturePipe chan []float64
