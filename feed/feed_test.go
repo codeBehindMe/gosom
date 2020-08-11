@@ -41,19 +41,6 @@ func TestCSVFileFeeder_GetFeed(t *testing.T) {
 	_ = feed
 }
 
-func SendValues(s chan string) {
-	for i := 0; i < 20; i++ {
-		s <- "hello"
-	}
-}
-
-func TestSendValues(t *testing.T) {
-	c := make(chan string)
-	go SendValues(c)
-
-	y := <-c
-	fmt.Println(y)
-}
 // FIXME: This needs to be converted to test
 func TestCSVFileFeeder_Start(t *testing.T) {
 
