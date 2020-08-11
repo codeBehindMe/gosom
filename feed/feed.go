@@ -44,7 +44,7 @@ type CSVFileFeeder struct {
 	FeatureSize int
 }
 
-func (c *CSVFileFeeder) MakeFeaturePipe() FeaturePipe {
+func (c CSVFileFeeder) MakeFeaturePipe() FeaturePipe {
 	return make(FeaturePipe)
 }
 
@@ -62,7 +62,7 @@ func splitCSVToFloat64Slice(s string) ([]float64, error) {
 	return floatSlice, nil
 }
 
-func (c *CSVFileFeeder) Start(sc FeaturePipe) {
+func (c CSVFileFeeder) Start(sc FeaturePipe) {
 	file, _ := os.Open(c.Filename)
 	defer file.Close()
 
