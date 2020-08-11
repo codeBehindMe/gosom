@@ -28,6 +28,7 @@ import (
 	"testing"
 )
 
+// FIXME: This needs to be converted to a test.
 func TestCSVFileFeeder_GetFeed(t *testing.T) {
 	filePath := "test.csv"
 	feeder := CSVFileFeeder{
