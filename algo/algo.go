@@ -24,8 +24,10 @@
 package algo
 
 import (
+	"github.com/codeBehindMe/gosom/feed"
 	"github.com/codeBehindMe/gosom/mapx"
 	"github.com/codeBehindMe/gosom/utilx"
+	"io"
 	"math"
 )
 
@@ -36,6 +38,62 @@ type Trainer interface {
 type Learner interface {
 	SetLearningRate(r float64)
 	GetLearningRate() float64
+}
+
+type SOM struct {
+	Feed       feed.Feeder
+	Mapx       *mapx.Mapx
+	Radius     Sigma
+	LR         LearningRate
+	Iterations int
+	Lambda     float64
+}
+
+// Train the SOM
+func (s *SOM) Train() {
+	pipe := s.Feed.MakeFeaturePipe()
+	go s.Feed.Start(pipe)
+
+	for t := 0; t < s.Iterations; t++{
+		for feature := range pipe {
+			trainingStep(feature, &s.Mapx.Data, s.Mapx, s.Radius, s.LR)
+			s.Radius.Decay(float64(t), s.Lambda)
+			s.LR.Decay(float64(t), s.Lambda)
+			t++
+		}
+	}
+}
+
+func NewSOM(feeder feed.Feeder, height int, width int, weights int, initialisationScheme mapx.Scheme, maxIter int, initialLearningRate LearningRate) *SOM {
+
+	mpx := mapx.New(height, width, weights)
+	err := mpx.Initialise(initialisationScheme)
+	if err != nil {
+		panic(err)
+	}
+	// FIXME: Make this max(width,height)/2
+	sigmaZero := float64(width) / 2
+	lambda := float64(maxIter) / math.Log(sigmaZero)
+	return &SOM{
+		Feed:       feeder,
+		Mapx:       mpx,
+		Radius:     Sigma(sigmaZero),
+		LR:         initialLearningRate,
+		Iterations: maxIter,
+		Lambda:     lambda,
+	}
+}
+
+// Dump the weights of the map
+func (s *SOM) DumpWeights(r *io.Writer) {
+	// TODO: Implement this
+}
+
+func trainingStep(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius Sigma, learningRate LearningRate) {
+	bmu := bestMatchingUnit(featureInstance, *m)
+	distances := GetDistanceOfNeighboursOfBMU(bmu, *mapx)
+	influence := GetInfluenceOfBMU(distances, radius)
+	updateWeights(influence, m, learningRate, featureInstance)
 }
 
 // FIXME: Missing test.
