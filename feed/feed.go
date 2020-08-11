@@ -76,22 +76,6 @@ func splitCSVToFloat64Slice(s string) ([]float64, error) {
 	}
 	return floatSlice, nil
 }
-func (c *CSVFileFeeder) StartFeeder(dp FeaturePipe) {
-	file, err := os.Open(c.Filename)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		floatArray, err := splitCSVToFloat64Slice(scanner.Text())
-		if err != nil {
-			panic(err)
-		}
-		dp <- floatArray
-	}
-}
 
 func (c *CSVFileFeeder) Start(sc FeaturePipe ) {
 	file, _ := os.Open(c.Filename)
