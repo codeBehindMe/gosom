@@ -97,7 +97,7 @@ func TestSOM_Train(t *testing.T) {
 	som := NewSOM(feed.CSVFileFeeder{
 		Filename:    "test.csv",
 		FeatureSize: 3,
-	}, 10, 10, 3, mapx.PseudoZerosOnesInitialiser, 100, 0.1)
+	}, 10, 10, 3, mapx.PseudoZerosOnesInitialiser, 50, 0.1)
 
 	_ = som
 	som.Train()

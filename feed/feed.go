@@ -33,7 +33,7 @@ import (
 // Implements feeding to the algorithm.
 
 type Feeder interface {
-	MakeFeaturePipe() FeaturePipe
+	MakeFeaturePipe() FeaturePipe // FIXME: Remove from interface
 	Start(sc FeaturePipe)
 }
 
