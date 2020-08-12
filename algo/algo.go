@@ -65,8 +65,7 @@ func (s *SOM) Train() {
 		go s.Feed.Start(pipe)
 
 		for feature := range pipe {
-			trainingStep(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayedForIteration(float64(t), s.Lambda), s.LR)
-			s.LR.Decay(float64(t), s.Lambda)
+			trainingStep(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayedForIteration(float64(t), s.Lambda), s.LR.DecayForIteration(float64(t), s.Lambda))
 		}
 	}
 }
@@ -110,7 +109,7 @@ func (s *SOM) DumpWeightsToFile(path string) {
 	}
 }
 
-func trainingStep(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate LearningRate) {
+func trainingStep(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate float64) {
 	bmu := bestMatchingUnit(featureInstance, *m)
 	distances := GetDistanceOfNeighboursOfBMU(bmu, *mapx)
 	influence := GetInfluenceOfBMU(distances, radius)
@@ -142,8 +141,8 @@ func (s *Sigma) DecayedForIteration(t float64, lambda float64) float64 {
 
 type LearningRate float64
 
-func (l *LearningRate) Decay(t, lambda float64) {
-	*l = LearningRate(float64(*l) * math.Exp(-t/lambda))
+func (l *LearningRate) DecayForIteration(t, lambda float64) float64 {
+	return float64(*l) * math.Exp(-t/lambda)
 }
 
 func GetDistanceOfNeighboursOfBMU(bmuIndex int, m mapx.Mapx) []float64 {
@@ -160,16 +159,16 @@ func GetDistanceOfNeighboursOfBMU(bmuIndex int, m mapx.Mapx) []float64 {
 func GetInfluenceOfBMU(distances []float64, s float64) []float64 {
 	influence := make([]float64, len(distances))
 	for i := 0; i < len(distances); i++ {
-		influence[i] = math.Exp(-1 * math.Pow(distances[i], 2) / (2 * math.Pow(float64(s), 2)))
+		influence[i] = math.Exp(-1 * math.Pow(distances[i], 2) / (2 * math.Pow(s, 2)))
 	}
 	return influence
 }
 
-func updateWeights(influence []float64, m *[]mapx.NeuronDouble, lr LearningRate, trainingInstance []float64) {
+func updateWeights(influence []float64, m *[]mapx.NeuronDouble, lr float64, trainingInstance []float64) {
 	mpx := *m
 	for i := 0; i < len(influence); i++ {
 		for j := 0; j < len(mpx[i]); j++ {
-			mpx[i][j] = mpx[i][j] + float64(lr)*influence[i]*(trainingInstance[j]-mpx[i][j])
+			mpx[i][j] = mpx[i][j] + lr*influence[i]*(trainingInstance[j]-mpx[i][j])
 		}
 	}
 }

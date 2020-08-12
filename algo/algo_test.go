@@ -39,7 +39,7 @@ func TestSigma_Decay(t *testing.T) {
 
 func TestLearningRate_Decay(t *testing.T) {
 	var lr LearningRate = 10.0
-	lr.Decay(1, 10)
+	lr.DecayForIteration(1, 10)
 	fmt.Printf("%v", lr)
 }
 
@@ -90,7 +90,7 @@ func TestUpdateWeights(t *testing.T) {
 
 	influence := GetInfluenceOfBMU(distances, float64(sigma))
 
-	updateWeights(influence, &mpx.Data, lr, trInstance)
+	updateWeights(influence, &mpx.Data, lr.DecayForIteration(0,1), trInstance)
 }
 
 func TestSOM_Train(t *testing.T) {
