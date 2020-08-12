@@ -36,7 +36,7 @@ func TestRandomFeeder_Start(t *testing.T) {
 		NumInstances: 1000,
 	}
 	_ = randFeeder
-	som := algo.NewSOM(randFeeder, 100, 100, 3, mapx.PseudoZerosOnesInitialiser, 1, 0.1)
+	som := algo.NewSOM(randFeeder, 10, 10, 3, mapx.PseudoZerosOnesInitialiser, 1, 0.1)
 	som.Train()
 	som.DumpWeightsToFile("weights.json")
 }
