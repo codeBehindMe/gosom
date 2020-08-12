@@ -65,8 +65,7 @@ func (s *SOM) Train() {
 		go s.Feed.Start(pipe)
 
 		for feature := range pipe {
-			trainingStep(feature, &s.Mapx.Data, s.Mapx, s.Radius, s.LR)
-			s.Radius.Decay(float64(t), s.Lambda)
+			trainingStep(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayedForIteration(float64(t), s.Lambda), s.LR)
 			s.LR.Decay(float64(t), s.Lambda)
 		}
 	}
@@ -101,17 +100,17 @@ func (s *SOM) dumpWeights(r *io.WriteCloser) {
 func (s *SOM) DumpWeightsToFile(path string) {
 	data := s.Mapx.Data
 
-	b , err := json.Marshal(data)
+	b, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile(path,b,0644)
-	if err != nil{
+	err = ioutil.WriteFile(path, b, 0644)
+	if err != nil {
 		panic(err)
 	}
 }
 
-func trainingStep(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius Sigma, learningRate LearningRate) {
+func trainingStep(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate LearningRate) {
 	bmu := bestMatchingUnit(featureInstance, *m)
 	distances := GetDistanceOfNeighboursOfBMU(bmu, *mapx)
 	influence := GetInfluenceOfBMU(distances, radius)
@@ -137,8 +136,8 @@ func bestMatchingUnit(input []float64, m []mapx.NeuronDouble) int {
 
 type Sigma float64
 
-func (s *Sigma) Decay(t float64, lambda float64) {
-	*s = Sigma(float64(*s) * math.Exp(-t/lambda))
+func (s *Sigma) DecayedForIteration(t float64, lambda float64) float64 {
+	return float64(*s) * math.Exp(-t/lambda)
 }
 
 type LearningRate float64
@@ -158,7 +157,7 @@ func GetDistanceOfNeighboursOfBMU(bmuIndex int, m mapx.Mapx) []float64 {
 	return mask
 }
 
-func GetInfluenceOfBMU(distances []float64, s Sigma) []float64 {
+func GetInfluenceOfBMU(distances []float64, s float64) []float64 {
 	influence := make([]float64, len(distances))
 	for i := 0; i < len(distances); i++ {
 		influence[i] = math.Exp(-1 * math.Pow(distances[i], 2) / (2 * math.Pow(float64(s), 2)))

@@ -33,7 +33,7 @@ import (
 // FIXME: Convert to test right now its just printing a value.
 func TestSigma_Decay(t *testing.T) {
 	var s Sigma = 10.0
-	s.Decay(1, 10)
+	s.DecayedForIteration(1, 10)
 	fmt.Printf("%v", s)
 }
 
@@ -73,7 +73,7 @@ func TestGetInfluenceOfBMU(t *testing.T) {
 	s := Sigma(5)
 
 	distances := GetDistanceOfNeighboursOfBMU(bmuIndex, *mpx)
-	influence := GetInfluenceOfBMU(distances, s)
+	influence := GetInfluenceOfBMU(distances, float64(s))
 
 	_ = influence
 }
@@ -88,7 +88,7 @@ func TestUpdateWeights(t *testing.T) {
 
 	distances := GetDistanceOfNeighboursOfBMU(bmuIndex, *mpx)
 
-	influence := GetInfluenceOfBMU(distances, sigma)
+	influence := GetInfluenceOfBMU(distances, float64(sigma))
 
 	updateWeights(influence, &mpx.Data, lr, trInstance)
 }
