@@ -1,1 +1,9 @@
 .idea
+.cache
+.config
+.ipynb_checkpoints
+.ipython
+.local
+.npm
+*.ipynb
+.jupyter
