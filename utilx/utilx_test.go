@@ -44,3 +44,12 @@ func TestEuclidianDistance2D(t *testing.T) {
 		t.Errorf("Incorrect distance - got %v want %v", dist, 5)
 	}
 }
+
+func TestMax(t *testing.T) {
+	vars := []int{1, 2, 6, 3, 4, 5}
+	want := 6
+	got := Max(vars...)
+	if got != want {
+		t.Errorf("Incorrect max, got %v, want %v", got, want)
+	}
+}

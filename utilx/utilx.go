@@ -43,3 +43,13 @@ func GetMinInFloat64Slice(s []float64) (float64, int) {
 func EuclidianDistance2D(x1, y1, x2, y2 float64) float64 {
 	return math.Sqrt(math.Pow(x2-x1, 2) + math.Pow(y2-y1, 2))
 }
+
+func Max(vars ...int) int {
+	max := vars[0]
+	for _, v := range vars {
+		if v > max {
+			max = v
+		}
+	}
+	return max
+}
