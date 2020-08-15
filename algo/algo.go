@@ -65,7 +65,7 @@ func (s *SOM) Train() {
 		go s.Feed.Start(pipe)
 
 		for feature := range pipe {
-			trainingStep(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayedForIteration(float64(t), s.Lambda), s.LR.DecayForIteration(float64(t), s.Lambda))
+			StepForward(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayedForIteration(float64(t), s.Lambda), s.LR.DecayForIteration(float64(t), s.Lambda))
 		}
 	}
 }
@@ -109,7 +109,7 @@ func (s *SOM) DumpWeightsToFile(path string) {
 	}
 }
 
-func trainingStep(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate float64) {
+func StepForward(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate float64) {
 	bmu := bestMatchingUnit(featureInstance, *m)
 	distances := GetDistanceOfNeighboursOfBMU(bmu, *mapx)
 	influence := GetInfluenceOfBMU(distances, radius)
