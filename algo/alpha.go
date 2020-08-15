@@ -43,12 +43,12 @@ func (a *Alpha64) Decay(t int, lambda Lambda64) {
 	a.Alpha = a.AlphaZero * math.Exp(-float64(t)/float64(lambda))
 }
 
-func (a *Alpha64) GetCurrentAlpha() float64 {
+func (a *Alpha64) GetCurrentValue() float64 {
 	return a.Alpha
 }
 
-func (a *Alpha64) DecayAndGet(t int, lambda64 Lambda64) float64 {
+func (a *Alpha64) DecayAndGetValue(t int, lambda64 Lambda64) float64 {
 	a.Decay(t, lambda64)
-	return a.GetCurrentAlpha()
+	return a.GetCurrentValue()
 }
 

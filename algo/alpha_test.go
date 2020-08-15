@@ -53,10 +53,10 @@ func TestAlpha64_Decay(t *testing.T) {
 	}
 }
 
-func TestAlpha64_DecayAndGet(t *testing.T) {
+func TestAlpha64_DecayAndGetValue(t *testing.T) {
 	alpha := NewAlpha64(0.1)
 
-	got := alpha.DecayAndGet(0, Lambda64(math.E))
+	got := alpha.DecayAndGetValue(0, Lambda64(math.E))
 	want := 0.1
 
 	if got != want {
@@ -64,10 +64,10 @@ func TestAlpha64_DecayAndGet(t *testing.T) {
 	}
 }
 
-func TestAlpha64_GetCurrentAlpha(t *testing.T) {
+func TestAlpha64_GetCurrentValue(t *testing.T) {
 	alpha := NewAlpha64(0.1)
 
-	got := alpha.GetCurrentAlpha()
+	got := alpha.GetCurrentValue()
 	want := 0.1
 	if got != want {
 		t.Errorf("Incorrect  alpha: got %v, want %v", got, want)
