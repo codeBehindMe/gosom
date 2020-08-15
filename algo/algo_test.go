@@ -50,7 +50,7 @@ func TestBestMatchingUnit(t *testing.T) {
 		{0.1, 0.1, 0.1},
 	}
 	testInput := []float64{0.8, 0.8, 0.8}
-	bmu := bestMatchingUnit(testInput, testNeurons)
+	bmu := BestMatchingUnit(testInput, testNeurons)
 	if bmu != 1 {
 		t.Errorf("Failed to get best matching unit - got %v, want %v", bmu, 1)
 	}
@@ -82,7 +82,7 @@ func TestUpdateWeights(t *testing.T) {
 	mpx := mapx.New(10, 10, 3)
 	_ = mpx.Initialise(mapx.OnesInitialiser)
 	trInstance := []float64{0.1, 0.1, 0.1}
-	bmuIndex := bestMatchingUnit(trInstance, mpx.Data)
+	bmuIndex := BestMatchingUnit(trInstance, mpx.Data)
 	lr := LearningRate(0.1)
 	sigma := Sigma(5) // max(10,10)/2
 

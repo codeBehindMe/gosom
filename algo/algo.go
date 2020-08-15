@@ -110,16 +110,16 @@ func (s *SOM) DumpWeightsToFile(path string) {
 }
 
 func StepForward(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate float64) {
-	bmu := bestMatchingUnit(featureInstance, *m)
+	bmu := BestMatchingUnit(featureInstance, *m)
 	distances := GetDistanceOfNeighboursOfBMU(bmu, *mapx)
 	influence := GetInfluenceOfBMU(distances, radius)
 	updateWeights(influence, m, learningRate, featureInstance)
 }
 
 // FIXME: Missing test.
-// bestMatchingUnit returns the index of the neuron which has the closest
+// BestMatchingUnit returns the index of the neuron which has the closest
 // distance to the input vector.
-func bestMatchingUnit(input []float64, m []mapx.NeuronDouble) int {
+func BestMatchingUnit(input []float64, m []mapx.NeuronDouble) int {
 	distMatrix := make([]float64, len(m))
 
 	// FIXME: We need to do input dimension safety check somewhere.
