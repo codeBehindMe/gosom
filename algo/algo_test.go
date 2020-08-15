@@ -90,7 +90,7 @@ func TestUpdateWeights(t *testing.T) {
 
 	influence := GetInfluenceOfBMU(distances, float64(sigma))
 
-	updateWeights(influence, &mpx.Data, lr.DecayForIteration(0,1), trInstance)
+	UpdateWeights(influence, &mpx.Data, lr.DecayForIteration(0,1), trInstance)
 }
 
 func TestSOM_Train(t *testing.T) {

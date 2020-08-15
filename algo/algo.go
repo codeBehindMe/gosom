@@ -113,7 +113,7 @@ func StepForward(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.M
 	bmu := BestMatchingUnit(featureInstance, *m)
 	distances := GetDistanceOfNeighboursOfBMU(bmu, *mapx)
 	influence := GetInfluenceOfBMU(distances, radius)
-	updateWeights(influence, m, learningRate, featureInstance)
+	UpdateWeights(influence, m, learningRate, featureInstance)
 }
 
 // FIXME: Missing test.
@@ -164,7 +164,7 @@ func GetInfluenceOfBMU(distances []float64, s float64) []float64 {
 	return influence
 }
 
-func updateWeights(influence []float64, m *[]mapx.NeuronDouble, lr float64, trainingInstance []float64) {
+func UpdateWeights(influence []float64, m *[]mapx.NeuronDouble, lr float64, trainingInstance []float64) {
 	mpx := *m
 	for i := 0; i < len(influence); i++ {
 		for j := 0; j < len(mpx[i]); j++ {
