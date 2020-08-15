@@ -32,7 +32,7 @@ func TestNewIterationBasedLambda(t *testing.T) {
 	maxIter := 10
 
 	want := 10.
-	got := float64(NewIterationBasedLambda(maxIter, math.E))
+	got := float64(*NewIterationBasedLambda(maxIter, math.E))
 	if got != want {
 		t.Errorf("Incorrect lambda, got %v, want %v", got, want)
 	}
