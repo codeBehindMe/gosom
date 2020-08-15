@@ -28,22 +28,34 @@ import (
 	"math"
 )
 
+// FIXME: GoDocs
 // Contains the behaviour specific to the neighbourhood radius commonly denoted
 // by sigma.
 // It is most appropriate to define the starting sigma denoted as sigma zero
 // which then decays after some iteration number t and scaled by some time
 // constant lambda.
 
-type SigmaZero float64
-
-// SigmaAfterDecay returns the value of sigma after some decay has taken place.
-// The value t is the iteration number and lambda is the time constant.
-func (s *SigmaZero) SigmaAfterDecay(t int, lambda Lambda64) float64 {
-	return float64(*s) * math.Exp(-float64(t)/float64(lambda))
+type Sigma64 struct {
+	SigmaZero float64
+	Sigma     float64
 }
 
-// NewSigmaZero initialises sigma zero based on a commonly used mechanism by
-// taking the half the size of the largest dimension of the map.
-func NewSigmaZero(width, height int) SigmaZero {
-	return SigmaZero(float64(utilx.Max(width, height)) / 2)
+func NewSigma64(width, height int) *Sigma64 {
+	sigmaZero := float64(utilx.Max(width, height)) / 2
+	return &Sigma64{
+		SigmaZero: sigmaZero,
+		Sigma:     sigmaZero,
+	}
+}
+
+func (s *Sigma64) Decay(t int, lambda Lambda64) {
+	s.Sigma = s.SigmaZero * math.Exp(-float64(t)/float64(lambda))
+}
+
+func (s *Sigma64) GetCurrentValue() float64 {
+	return s.Sigma
+}
+func (s *Sigma64) DecayAndGetValue(t int, lambda Lambda64) float64 {
+	s.Decay(t, lambda)
+	return s.GetCurrentValue()
 }

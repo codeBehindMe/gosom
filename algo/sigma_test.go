@@ -23,28 +23,27 @@
 
 package algo
 
-import (
-	"math"
-	"testing"
-)
+import "testing"
 
-func TestSigma64_SigmaAfterDecay(t *testing.T) {
-	sigmaZero := SigmaZero(math.E)
-	iter, lambda := 10, NewIterationBasedLambda(10, sigmaZero)
+func TestNewSigma64(t *testing.T) {
+	sigma := NewSigma64(6, 5)
 
-	want := 1.0 // 0.1 * e^(- 10/10)
-	got := sigmaZero.SigmaAfterDecay(iter, lambda)
-
+	got := sigma.SigmaZero
+	want := 3.
 	if got != want {
-		t.Errorf("Incorrect sigma after decay: got %v, want %v", got, want)
+		t.Errorf("Incorrect sigma: got %v, want %v", got, want)
 	}
 }
 
-func TestNewSigmaZero(t *testing.T) {
-	width, height := 12, 10
-	want := 6.
-	got := NewSigmaZero(width, height)
-	if float64(got) != want {
-		t.Errorf("Incorrect sigma zero init: got %v, want %v", got, want)
+func TestSigma64_Decay(t *testing.T) {
+	sigma := NewSigma64(6, 4)
+
+	sigma.Decay(0, Lambda64(0.1))
+
+	got := sigma.SigmaZero
+	want := 3.
+
+	if got != want {
+		t.Errorf("Incorrect sigma: got %v, want %v", got, want)
 	}
 }
