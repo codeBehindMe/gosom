@@ -29,11 +29,21 @@ import (
 )
 
 func TestNewIterationBasedLambda(t *testing.T) {
-	maxIter, sigmaZero := 10, SigmaZero(math.E)
+	maxIter := 10
 
-	want := 10
-	got := NewIterationBasedLambda(maxIter, sigmaZero)
-	if got != 10 {
-		t.Errorf("Incorrect got, got %v, want %v", got, want)
+	want := 10.
+	got := float64(NewIterationBasedLambda(maxIter, math.E))
+	if got != want {
+		t.Errorf("Incorrect lambda, got %v, want %v", got, want)
+	}
+}
+
+func TestLambda64_GetValue(t *testing.T) {
+
+	lambda := Lambda64(10.)
+	want := 10.
+	got := lambda.GetValue()
+	if got != want {
+		t.Errorf("Incorrect lambda: got %v, want %v", got, want)
 	}
 }

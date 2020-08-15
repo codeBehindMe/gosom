@@ -30,6 +30,10 @@ import "math"
 
 type Lambda64 float64
 
-func NewIterationBasedLambda(maxIterations int, sigmaZero SigmaZero) Lambda64 {
-	return Lambda64(float64(maxIterations) / math.Log(float64(sigmaZero)))
+func NewIterationBasedLambda(maxIterations int, sigmaZero float64) Lambda64 {
+	return Lambda64(float64(maxIterations) / math.Log(sigmaZero))
+}
+
+func (l *Lambda64) GetValue()float64{
+	return float64(*l)
 }
