@@ -38,7 +38,7 @@ func TestNewSigma64(t *testing.T) {
 func TestSigma64_Decay(t *testing.T) {
 	sigma := NewSigma64(6, 4)
 
-	sigma.Decay(0, Lambda64(0.1))
+	sigma.Decay(0, 0.1)
 
 	got := sigma.SigmaZero
 	want := 3.

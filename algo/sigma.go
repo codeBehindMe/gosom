@@ -48,14 +48,14 @@ func NewSigma64(width, height int) *Sigma64 {
 	}
 }
 
-func (s *Sigma64) Decay(t int, lambda Lambda64) {
-	s.Sigma = s.SigmaZero * math.Exp(-float64(t)/float64(lambda))
+func (s *Sigma64) Decay(t int, lambda float64) {
+	s.Sigma = s.SigmaZero * math.Exp(-float64(t)/lambda)
 }
 
 func (s *Sigma64) GetCurrentValue() float64 {
 	return s.Sigma
 }
-func (s *Sigma64) DecayAndGetValue(t int, lambda Lambda64) float64 {
+func (s *Sigma64) DecayAndGetValue(t int, lambda float64) float64 {
 	s.Decay(t, lambda)
 	return s.GetCurrentValue()
 }

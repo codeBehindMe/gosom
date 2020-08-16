@@ -39,16 +39,16 @@ func NewAlpha64(alphaZero float64) *Alpha64 {
 	}
 }
 
-func (a *Alpha64) Decay(t int, lambda Lambda64) {
-	a.Alpha = a.AlphaZero * math.Exp(-float64(t)/float64(lambda))
+func (a *Alpha64) Decay(t int, lambda float64) {
+	a.Alpha = a.AlphaZero * math.Exp(-float64(t)/lambda)
 }
 
 func (a *Alpha64) GetCurrentValue() float64 {
 	return a.Alpha
 }
 
-func (a *Alpha64) DecayAndGetValue(t int, lambda64 Lambda64) float64 {
-	a.Decay(t, lambda64)
+func (a *Alpha64) DecayAndGetValue(t int, lambda float64) float64 {
+	a.Decay(t, lambda)
 	return a.GetCurrentValue()
 }
 

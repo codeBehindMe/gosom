@@ -44,7 +44,7 @@ func TestNewAlpha64(t *testing.T) {
 func TestAlpha64_Decay(t *testing.T) {
 	alpha := NewAlpha64(0.1)
 
-	alpha.Decay(0, Lambda64(math.E))
+	alpha.Decay(0, math.E)
 	got := alpha.Alpha
 	want := 0.1
 
@@ -56,7 +56,7 @@ func TestAlpha64_Decay(t *testing.T) {
 func TestAlpha64_DecayAndGetValue(t *testing.T) {
 	alpha := NewAlpha64(0.1)
 
-	got := alpha.DecayAndGetValue(0, Lambda64(math.E))
+	got := alpha.DecayAndGetValue(0, math.E)
 	want := 0.1
 
 	if got != want {
