@@ -35,6 +35,7 @@ import (
 type Feeder interface {
 	MakeFeaturePipe() FeaturePipe // FIXME: Remove from interface
 	Start(sc FeaturePipe)
+	GetFeatureSize() int
 }
 
 type FeaturePipe chan []float64
@@ -75,4 +76,8 @@ func (c CSVFileFeeder) Start(sc FeaturePipe) {
 		sc <- floatArray
 	}
 	close(sc)
+}
+
+func (c CSVFileFeeder) GetFeatureSize() int {
+	return c.FeatureSize
 }

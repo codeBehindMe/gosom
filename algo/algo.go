@@ -65,7 +65,7 @@ func (s *SOM) Train() {
 		go s.Feed.Start(pipe)
 
 		for feature := range pipe {
-			trainingStep(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayedForIteration(float64(t), s.Lambda), s.LR.DecayForIteration(float64(t), s.Lambda))
+			StepForward(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayedForIteration(float64(t), s.Lambda), s.LR.DecayForIteration(float64(t), s.Lambda))
 		}
 	}
 }
@@ -109,17 +109,17 @@ func (s *SOM) DumpWeightsToFile(path string) {
 	}
 }
 
-func trainingStep(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate float64) {
-	bmu := bestMatchingUnit(featureInstance, *m)
+func StepForward(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate float64) {
+	bmu := BestMatchingUnit(featureInstance, *m)
 	distances := GetDistanceOfNeighboursOfBMU(bmu, *mapx)
 	influence := GetInfluenceOfBMU(distances, radius)
-	updateWeights(influence, m, learningRate, featureInstance)
+	UpdateWeights(influence, m, learningRate, featureInstance)
 }
 
 // FIXME: Missing test.
-// bestMatchingUnit returns the index of the neuron which has the closest
+// BestMatchingUnit returns the index of the neuron which has the closest
 // distance to the input vector.
-func bestMatchingUnit(input []float64, m []mapx.NeuronDouble) int {
+func BestMatchingUnit(input []float64, m []mapx.NeuronDouble) int {
 	distMatrix := make([]float64, len(m))
 
 	// FIXME: We need to do input dimension safety check somewhere.
@@ -164,7 +164,7 @@ func GetInfluenceOfBMU(distances []float64, s float64) []float64 {
 	return influence
 }
 
-func updateWeights(influence []float64, m *[]mapx.NeuronDouble, lr float64, trainingInstance []float64) {
+func UpdateWeights(influence []float64, m *[]mapx.NeuronDouble, lr float64, trainingInstance []float64) {
 	mpx := *m
 	for i := 0; i < len(influence); i++ {
 		for j := 0; j < len(mpx[i]); j++ {

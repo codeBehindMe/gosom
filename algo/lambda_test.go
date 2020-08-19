@@ -21,35 +21,29 @@
   Contact: github.com/codeBehindMe
 */
 
-package utilx
+package algo
 
-import "math"
+import (
+	"math"
+	"testing"
+)
 
-// GetMinInFloat64Slice returns the smallest value and its index.
-func GetMinInFloat64Slice(s []float64) (float64, int) {
-	var minValue float64 = math.MaxFloat64
-	var minIndex int = 0
+func TestNewIterationBasedLambda(t *testing.T) {
+	maxIter := 10
 
-	for i, v := range s {
-		if v < minValue {
-			minValue = v
-			minIndex = i
-		}
+	want := 10.
+	got := float64(*NewIterationBasedLambda(maxIter, math.E))
+	if got != want {
+		t.Errorf("Incorrect lambda, got %v, want %v", got, want)
 	}
-	return minValue, minIndex
 }
 
-// FIXME: This function is duplicated.
-func EuclidianDistance2D(x1, y1, x2, y2 float64) float64 {
-	return math.Sqrt(math.Pow(x2-x1, 2) + math.Pow(y2-y1, 2))
-}
+func TestLambda64_GetValue(t *testing.T) {
 
-func Max(vars ...int) int {
-	max := vars[0]
-	for _, v := range vars {
-		if v > max {
-			max = v
-		}
+	lambda := Lambda64(10.)
+	want := 10.
+	got := lambda.GetValue()
+	if got != want {
+		t.Errorf("Incorrect lambda: got %v, want %v", got, want)
 	}
-	return max
 }

@@ -21,35 +21,21 @@
   Contact: github.com/codeBehindMe
 */
 
-package utilx
+package algo
 
 import "math"
 
-// GetMinInFloat64Slice returns the smallest value and its index.
-func GetMinInFloat64Slice(s []float64) (float64, int) {
-	var minValue float64 = math.MaxFloat64
-	var minIndex int = 0
+// Contains the behaviour specific to the time constant commonly denoted by
+// lambda.
 
-	for i, v := range s {
-		if v < minValue {
-			minValue = v
-			minIndex = i
-		}
-	}
-	return minValue, minIndex
+type Lambda64 float64
+
+func NewIterationBasedLambda(maxIterations int, sigmaZero float64) *Lambda64 {
+	var a = new(Lambda64)
+	*a = Lambda64(float64(maxIterations) / math.Log(sigmaZero))
+	return a
 }
 
-// FIXME: This function is duplicated.
-func EuclidianDistance2D(x1, y1, x2, y2 float64) float64 {
-	return math.Sqrt(math.Pow(x2-x1, 2) + math.Pow(y2-y1, 2))
-}
-
-func Max(vars ...int) int {
-	max := vars[0]
-	for _, v := range vars {
-		if v > max {
-			max = v
-		}
-	}
-	return max
+func (l *Lambda64) GetValue()float64{
+	return float64(*l)
 }

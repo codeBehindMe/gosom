@@ -21,35 +21,34 @@
   Contact: github.com/codeBehindMe
 */
 
-package utilx
+package algo
 
 import "math"
 
-// GetMinInFloat64Slice returns the smallest value and its index.
-func GetMinInFloat64Slice(s []float64) (float64, int) {
-	var minValue float64 = math.MaxFloat64
-	var minIndex int = 0
+// Contains behaviour specific to the learning rate commonly denoted by alpha.
 
-	for i, v := range s {
-		if v < minValue {
-			minValue = v
-			minIndex = i
-		}
+type Alpha64 struct {
+	AlphaZero float64
+	Alpha     float64
+}
+
+func NewAlpha64(alphaZero float64) *Alpha64 {
+	return &Alpha64{
+		AlphaZero: alphaZero,
+		Alpha:     alphaZero,
 	}
-	return minValue, minIndex
 }
 
-// FIXME: This function is duplicated.
-func EuclidianDistance2D(x1, y1, x2, y2 float64) float64 {
-	return math.Sqrt(math.Pow(x2-x1, 2) + math.Pow(y2-y1, 2))
+func (a *Alpha64) Decay(t int, lambda float64) {
+	a.Alpha = a.AlphaZero * math.Exp(-float64(t)/lambda)
 }
 
-func Max(vars ...int) int {
-	max := vars[0]
-	for _, v := range vars {
-		if v > max {
-			max = v
-		}
-	}
-	return max
+func (a *Alpha64) GetCurrentValue() float64 {
+	return a.Alpha
 }
+
+func (a *Alpha64) DecayAndGetValue(t int, lambda float64) float64 {
+	a.Decay(t, lambda)
+	return a.GetCurrentValue()
+}
+

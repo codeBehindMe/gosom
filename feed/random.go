@@ -47,3 +47,7 @@ func (r RandomFeeder) Start(sc FeaturePipe) {
 	}
 	close(sc)
 }
+
+func (r RandomFeeder) GetFeatureSize() int {
+	return r.FeatureSize
+}
