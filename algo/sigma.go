@@ -48,6 +48,11 @@ func NewSigma64(width, height int) *Sigma64 {
 	}
 }
 
+// FIXME: Potential confusion with decay
+// This needs some serious documentation since decay indicates that the state
+// contained in this variable is important. However, that is *NOT* the case.
+// All variables that impact the decayed value are passed in and only the
+// initial value of sigma is used.
 func (s *Sigma64) Decay(t int, lambda float64) {
 	s.Sigma = s.SigmaZero * math.Exp(-float64(t)/lambda)
 }
