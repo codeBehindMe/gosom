@@ -25,7 +25,6 @@ package algo
 
 import (
 	"fmt"
-	"github.com/codeBehindMe/gosom/feed"
 	"github.com/codeBehindMe/gosom/mapx"
 	"testing"
 )
@@ -93,14 +92,3 @@ func TestUpdateWeights(t *testing.T) {
 	UpdateWeights(influence, &mpx.Data, lr.DecayForIteration(0,1), trInstance)
 }
 
-func TestSOM_Train(t *testing.T) {
-	som := NewSOM(feed.CSVFileFeeder{
-		Filename:    "test.csv",
-		FeatureSize: 3,
-	}, 10, 10, 3, mapx.PseudoZerosOnesInitialiser, 40, 0.1)
-
-	_ = som
-	som.Train()
-
-	som.DumpWeightsToFile("weights.json")
-}

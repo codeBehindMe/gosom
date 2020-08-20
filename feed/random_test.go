@@ -24,7 +24,7 @@
 package feed_test
 
 import (
-	"github.com/codeBehindMe/gosom/algo"
+	"github.com/codeBehindMe/gosom"
 	"github.com/codeBehindMe/gosom/feed"
 	"github.com/codeBehindMe/gosom/mapx"
 	"testing"
@@ -36,7 +36,7 @@ func TestRandomFeeder_Start(t *testing.T) {
 		NumInstances: 1000,
 	}
 	_ = randFeeder
-	som := algo.NewSOM(randFeeder, 10, 10, 3, mapx.PseudoZerosOnesInitialiser, 1, 0.1)
+	som := gosom.NewSOM64(randFeeder, 10, 10, 10, 0.1, mapx.PseudoZerosOnesInitialiser)
 	som.Train()
-	som.DumpWeightsToFile("weights.json")
+	som.DumpMapToFile("weights.json")
 }

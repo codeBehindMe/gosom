@@ -24,75 +24,15 @@
 package algo
 
 import (
-	"encoding/json"
-	"github.com/codeBehindMe/gosom/feed"
 	"github.com/codeBehindMe/gosom/mapx"
 	"github.com/codeBehindMe/gosom/utilx"
-	"io"
-	"io/ioutil"
 	"math"
 )
 
-type SOM struct {
-	Feed       feed.Feeder
-	Mapx       *mapx.Mapx
-	Radius     Sigma
-	LR         LearningRate
-	Iterations int
-	Lambda     float64
-}
 
-// Train the SOM
-func (s *SOM) Train() {
 
-	for t := 0; t < s.Iterations; t++ {
-		pipe := s.Feed.MakeFeaturePipe()
-		go s.Feed.Start(pipe)
 
-		for feature := range pipe {
-			StepForward(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayedForIteration(float64(t), s.Lambda), s.LR.DecayForIteration(float64(t), s.Lambda))
-		}
-	}
-}
 
-func NewSOM(feeder feed.Feeder, height int, width int, weights int, initialisationScheme mapx.Scheme, maxIter int, initialLearningRate LearningRate) *SOM {
-
-	mpx := mapx.New(height, width, weights)
-	err := mpx.Initialise(initialisationScheme)
-	if err != nil {
-		panic(err)
-	}
-	// FIXME: Make this max(width,height)/2
-	sigmaZero := float64(width) / 2
-	lambda := float64(maxIter) / math.Log(sigmaZero)
-	return &SOM{
-		Feed:       feeder,
-		Mapx:       mpx,
-		Radius:     Sigma(sigmaZero),
-		LR:         initialLearningRate,
-		Iterations: maxIter,
-		Lambda:     lambda,
-	}
-}
-
-func (s *SOM) dumpWeights(r *io.WriteCloser) {
-	// FIXME: Implement this much cleaner and reusable version.
-}
-
-// FIXME: Docstring
-// Dump the weights of the map to a json file.
-func (s *SOM) DumpWeightsToFile(path string) {
-	data := s.Mapx.Data
-
-	b, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
-	}
-	err = ioutil.WriteFile(path, b, 0644)
-	if err != nil {
-		panic(err)
-	}
-}
 
 func StepForward(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate float64) {
 	bmu := BestMatchingUnit(featureInstance, *m)
