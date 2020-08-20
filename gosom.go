@@ -64,7 +64,6 @@ trainingLoop:
 		go s.Feed.Start(pipe)
 		for feature := range pipe {
 			if t >= s.MaxTrainingIterations {
-				close(pipe)
 				break trainingLoop
 			}
 			algo.StepForward(feature, &s.Mapx.Data, s.Mapx, s.Radius.DecayAndGetValue(t, s.TimeConstant.GetValue()), s.LearningRate.DecayAndGetValue(t, s.TimeConstant.GetValue()))
