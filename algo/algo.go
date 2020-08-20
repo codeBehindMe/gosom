@@ -33,15 +33,6 @@ import (
 	"math"
 )
 
-type Trainer interface {
-	Train()
-}
-
-type Learner interface {
-	SetLearningRate(r float64)
-	GetLearningRate() float64
-}
-
 type SOM struct {
 	Feed       feed.Feeder
 	Mapx       *mapx.Mapx
@@ -49,12 +40,6 @@ type SOM struct {
 	LR         LearningRate
 	Iterations int
 	Lambda     float64
-}
-
-type JSONWeight struct {
-	Row     int       `json:"row"`
-	Col     int       `json:"col"`
-	Weights []float64 `json:"weights"`
 }
 
 // Train the SOM
