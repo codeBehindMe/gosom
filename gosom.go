@@ -41,11 +41,12 @@ type SOM64 struct {
 	MaxTrainingIterations int
 }
 
-func NewSOM64(feeder feed.Feeder, nRows, nCols, maxIterations int, initialLearningRate float64) *SOM64 {
+func NewSOM64(feeder feed.Feeder, nRows, nCols, maxIterations int, initialLearningRate float64, initialisationScheme mapx.Scheme) *SOM64 {
 	sigma := algo.NewSigma64(nCols, nRows)
 	alpha := algo.NewAlpha64(initialLearningRate)
 	lambda := algo.NewIterationBasedLambda(maxIterations, sigma.SigmaZero)
 	somMap := mapx.New(nRows, nCols, feeder.GetFeatureSize())
+	_ = somMap.Initialise(initialisationScheme)
 	return &SOM64{
 		Feed:                  feeder,
 		Mapx:                  somMap,

@@ -25,6 +25,7 @@ package gosom
 
 import (
 	"github.com/codeBehindMe/gosom/feed"
+	"github.com/codeBehindMe/gosom/mapx"
 	"testing"
 )
 
@@ -33,9 +34,24 @@ func TestNewSOM64(t *testing.T) {
 		FeatureSize:  3,
 		NumInstances: 10,
 	}
-	som := NewSOM64(feeder, 10, 10, 10, 0.1)
+	som := NewSOM64(feeder, 10, 10, 10, 0.1, mapx.RandomNormalInitialiser)
 
 	if som.TimeConstant.GetValue() != 6.213349345596119 {
 		t.Errorf("Incorrect lambda: got %v, want %v", som.TimeConstant.GetValue(), 6.213349345596119)
 	}
+}
+
+func TestSOM64_Train(t *testing.T) {
+
+	feeder := feed.RandomFeeder{
+		FeatureSize:  3,
+		NumInstances: 10,
+	}
+	som := NewSOM64(feeder, 10, 10, 10, 0.1, mapx.RandomNormalInitialiser)
+
+	if som.TimeConstant.GetValue() != 6.213349345596119 {
+		t.Errorf("Incorrect lambda: got %v, want %v", som.TimeConstant.GetValue(), 6.213349345596119)
+	}
+
+	som.Train()
 }
