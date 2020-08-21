@@ -51,4 +51,3 @@ func (a *Alpha64) DecayAndGetValue(t int, lambda float64) float64 {
 	a.Decay(t, lambda)
 	return a.GetCurrentValue()
 }
-

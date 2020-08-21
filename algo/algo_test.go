@@ -24,23 +24,9 @@
 package algo
 
 import (
-	"fmt"
 	"github.com/codeBehindMe/gosom/mapx"
 	"testing"
 )
-
-// FIXME: Convert to test right now its just printing a value.
-func TestSigma_Decay(t *testing.T) {
-	var s Sigma = 10.0
-	s.DecayedForIteration(1, 10)
-	fmt.Printf("%v", s)
-}
-
-func TestLearningRate_Decay(t *testing.T) {
-	var lr LearningRate = 10.0
-	lr.DecayForIteration(1, 10)
-	fmt.Printf("%v", lr)
-}
 
 func TestBestMatchingUnit(t *testing.T) {
 	testNeurons := []mapx.NeuronDouble{
@@ -69,10 +55,10 @@ func TestGetInfluenceOfBMU(t *testing.T) {
 	mpx := mapx.New(10, 10, 3)
 	_ = mpx.Initialise(mapx.OnesInitialiser)
 	bmuIndex := 0
-	s := Sigma(5)
+	s := NewSigma64(10, 10)
 
 	distances := GetDistanceOfNeighboursOfBMU(bmuIndex, *mpx)
-	influence := GetInfluenceOfBMU(distances, float64(s))
+	influence := GetInfluenceOfBMU(distances, s.GetCurrentValue())
 
 	_ = influence
 }
@@ -82,13 +68,12 @@ func TestUpdateWeights(t *testing.T) {
 	_ = mpx.Initialise(mapx.OnesInitialiser)
 	trInstance := []float64{0.1, 0.1, 0.1}
 	bmuIndex := BestMatchingUnit(trInstance, mpx.Data)
-	lr := LearningRate(0.1)
-	sigma := Sigma(5) // max(10,10)/2
+	lr := NewAlpha64(0.1)
+	sigma := NewSigma64(10, 10)
 
 	distances := GetDistanceOfNeighboursOfBMU(bmuIndex, *mpx)
 
-	influence := GetInfluenceOfBMU(distances, float64(sigma))
+	influence := GetInfluenceOfBMU(distances, sigma.GetCurrentValue())
 
-	UpdateWeights(influence, &mpx.Data, lr.DecayForIteration(0,1), trInstance)
+	UpdateWeights(influence, &mpx.Data, lr.DecayAndGetValue(0, 1.), trInstance)
 }
-

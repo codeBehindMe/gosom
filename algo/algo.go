@@ -29,11 +29,6 @@ import (
 	"math"
 )
 
-
-
-
-
-
 func StepForward(featureInstance []float64, m *[]mapx.NeuronDouble, mapx *mapx.Mapx, radius float64, learningRate float64) {
 	bmu := BestMatchingUnit(featureInstance, *m)
 	distances := GetDistanceOfNeighboursOfBMU(bmu, *mapx)
@@ -56,18 +51,6 @@ func BestMatchingUnit(input []float64, m []mapx.NeuronDouble) int {
 	}
 	_, minIndex := utilx.GetMinInFloat64Slice(distMatrix)
 	return minIndex
-}
-
-type Sigma float64
-
-func (s *Sigma) DecayedForIteration(t float64, lambda float64) float64 {
-	return float64(*s) * math.Exp(-t/lambda)
-}
-
-type LearningRate float64
-
-func (l *LearningRate) DecayForIteration(t, lambda float64) float64 {
-	return float64(*l) * math.Exp(-t/lambda)
 }
 
 func GetDistanceOfNeighboursOfBMU(bmuIndex int, m mapx.Mapx) []float64 {
