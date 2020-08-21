@@ -53,12 +53,6 @@ func BestMatchingUnit(input []float64, m []mapx.NeuronDouble) int {
 	return minIndex
 }
 
-type LearningRate float64
-
-func (l *LearningRate) DecayForIteration(t, lambda float64) float64 {
-	return float64(*l) * math.Exp(-t/lambda)
-}
-
 func GetDistanceOfNeighboursOfBMU(bmuIndex int, m mapx.Mapx) []float64 {
 	// FIXME: Recalculating expression is unidiomatic
 	mask := make([]float64, m.NRows*m.NCols)

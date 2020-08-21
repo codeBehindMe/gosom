@@ -24,16 +24,9 @@
 package algo
 
 import (
-	"fmt"
 	"github.com/codeBehindMe/gosom/mapx"
 	"testing"
 )
-
-func TestLearningRate_Decay(t *testing.T) {
-	var lr LearningRate = 10.0
-	lr.DecayForIteration(1, 10)
-	fmt.Printf("%v", lr)
-}
 
 func TestBestMatchingUnit(t *testing.T) {
 	testNeurons := []mapx.NeuronDouble{
@@ -75,12 +68,12 @@ func TestUpdateWeights(t *testing.T) {
 	_ = mpx.Initialise(mapx.OnesInitialiser)
 	trInstance := []float64{0.1, 0.1, 0.1}
 	bmuIndex := BestMatchingUnit(trInstance, mpx.Data)
-	lr := LearningRate(0.1)
+	lr := NewAlpha64(0.1)
 	sigma := NewSigma64(10, 10)
 
 	distances := GetDistanceOfNeighboursOfBMU(bmuIndex, *mpx)
 
 	influence := GetInfluenceOfBMU(distances, sigma.GetCurrentValue())
 
-	UpdateWeights(influence, &mpx.Data, lr.DecayForIteration(0, 1), trInstance)
+	UpdateWeights(influence, &mpx.Data, lr.DecayAndGetValue(0, 1.), trInstance)
 }
