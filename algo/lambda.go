@@ -36,6 +36,6 @@ func NewIterationBasedLambda(maxIterations int, sigmaZero float64) *Lambda64 {
 	return a
 }
 
-func (l *Lambda64) GetValue()float64{
+func (l *Lambda64) GetValue() float64 {
 	return float64(*l)
 }
