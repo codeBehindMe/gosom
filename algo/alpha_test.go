@@ -29,7 +29,10 @@ import (
 )
 
 func TestNewAlpha64(t *testing.T) {
-	alpha := NewAlpha64(0.1)
+	alpha, err := NewAlpha64(0.1)
+	if err != nil {
+		t.Error(err)
+	}
 
 	want := 0.1
 	if alpha.AlphaZero != want {
@@ -42,7 +45,10 @@ func TestNewAlpha64(t *testing.T) {
 }
 
 func TestAlpha64_Decay(t *testing.T) {
-	alpha := NewAlpha64(0.1)
+	alpha, err := NewAlpha64(0.1)
+	if err != nil {
+		t.Error(t)
+	}
 
 	alpha.Decay(0, math.E)
 	got := alpha.Alpha
@@ -54,7 +60,10 @@ func TestAlpha64_Decay(t *testing.T) {
 }
 
 func TestAlpha64_DecayAndGetValue(t *testing.T) {
-	alpha := NewAlpha64(0.1)
+	alpha, err := NewAlpha64(0.1)
+	if err != nil {
+		t.Error(err)
+	}
 
 	got := alpha.DecayAndGetValue(0, math.E)
 	want := 0.1
@@ -65,11 +74,23 @@ func TestAlpha64_DecayAndGetValue(t *testing.T) {
 }
 
 func TestAlpha64_GetCurrentValue(t *testing.T) {
-	alpha := NewAlpha64(0.1)
+	alpha, err := NewAlpha64(0.1)
+	if err != nil {
+		t.Error(err)
+	}
 
 	got := alpha.GetCurrentValue()
 	want := 0.1
 	if got != want {
 		t.Errorf("Incorrect  alpha: got %v, want %v", got, want)
+	}
+}
+
+// Alpha cannot be zero
+func TestAlpha64_Zero(t *testing.T) {
+	_, err := NewAlpha64(0)
+	if err == nil {
+		t.Fail()
+		t.Logf("cannot allow alpha to take zero value")
 	}
 }

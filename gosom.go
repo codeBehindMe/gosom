@@ -25,11 +25,12 @@ package gosom
 
 import (
 	"encoding/json"
+	"io"
+	"io/ioutil"
+
 	"github.com/codeBehindMe/gosom/algo"
 	"github.com/codeBehindMe/gosom/feed"
 	"github.com/codeBehindMe/gosom/mapx"
-	"io"
-	"io/ioutil"
 )
 
 type SOM64 struct {
@@ -43,7 +44,11 @@ type SOM64 struct {
 
 func NewSOM64(feeder feed.Feeder, nRows, nCols, maxIterations int, initialLearningRate float64, initialisationScheme mapx.Scheme) *SOM64 {
 	sigma := algo.NewSigma64(nCols, nRows)
-	alpha := algo.NewAlpha64(initialLearningRate)
+	alpha, err := algo.NewAlpha64(initialLearningRate)
+	if err != nil {
+		panic("im panicking because nobody implemented how to behave in this case")
+		// FIXME: Implement errors for SOM construction.
+	}
 	lambda := algo.NewIterationBasedLambda(maxIterations, sigma.SigmaZero)
 	somMap := mapx.New(nRows, nCols, feeder.GetFeatureSize())
 	_ = somMap.Initialise(initialisationScheme)

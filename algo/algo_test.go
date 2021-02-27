@@ -24,8 +24,9 @@
 package algo
 
 import (
-	"github.com/codeBehindMe/gosom/mapx"
 	"testing"
+
+	"github.com/codeBehindMe/gosom/mapx"
 )
 
 func TestBestMatchingUnit(t *testing.T) {
@@ -68,7 +69,10 @@ func TestUpdateWeights(t *testing.T) {
 	_ = mpx.Initialise(mapx.OnesInitialiser)
 	trInstance := []float64{0.1, 0.1, 0.1}
 	bmuIndex := BestMatchingUnit(trInstance, mpx.Data)
-	lr := NewAlpha64(0.1)
+	lr, err := NewAlpha64(0.1)
+	if err != nil {
+		t.Error(err)
+	}
 	sigma := NewSigma64(10, 10)
 
 	distances := GetDistanceOfNeighboursOfBMU(bmuIndex, *mpx)
